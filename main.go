@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
+	"gopkg.in/gomail.v2"
 	"log"
 	"os"
 	"strconv"
@@ -73,6 +74,19 @@ func main() {
 
 		// Print result
 		log.Println(fmt.Sprintf("Insert %s", u.Email))
+
+		// Send email
+		m := gomail.NewMessage()
+		m.SetHeader("From", os.Getenv("SENDER_EMAIL"))
+		m.SetHeader("To", os.Getenv("EMAIL_TO_SEND"))
+		m.SetHeader("Subject", "New customer left his email!")
+		m.SetBody("text/plain", fmt.Sprintf("Customer %s just left his email on %s", u.Email, u.Source))
+		d := gomail.NewDialer("smtp.yandex.ru", 465, os.Getenv("SENDER_EMAIL"), os.Getenv("SENDER_PASSWORD"))
+
+		if err := d.DialAndSend(m); err != nil {
+			log.Fatal(err)
+			return c.Status(500).JSON("Failed to send email")
+		}
 
 		return c.Status(201).JSON(&fiber.Map{"success": true})
 	})

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	_ "github.com/lib/pq"
 	"gopkg.in/gomail.v2"
 	"log"
@@ -52,6 +53,12 @@ func main() {
 
 	// Create a Fiber app
 	app := fiber.New()
+
+	// Setup CORS
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: os.Getenv("ALLOW_ORIGINS"),
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
 
 	// Create new Feedback
 	app.Post("/add", func(c *fiber.Ctx) error {

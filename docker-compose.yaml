@@ -8,6 +8,9 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - DATABASE_HOST=${DB_HOST}
       - DATABASE_PORT=${DB_PORT}
+      - SENDER_EMAIL=${SENDER_EMAIL}
+      - SENDER_PASSWORD=${SENDER_PASSWORD}
+      - EMAIL_TO_SEND=${EMAIL_TO_SEND}
     tty: true
     build: .
     ports:

@@ -53,10 +53,6 @@ func main() {
 	// Create a Fiber app
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.Status(201).JSON("Success")
-	})
-
 	// Create new Feedback
 	app.Post("/add", func(c *fiber.Ctx) error {
 		u := new(Feedback)
